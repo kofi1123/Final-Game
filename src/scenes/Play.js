@@ -3,8 +3,14 @@ class Play extends Phaser.Scene {
         super("play");
     }
     preload () {
+        //Visual
         this.load.image('tile', './assets/images/tile.png');
         this.load.image('player', './assets/images/player.png');
+
+        //Audio
+        this.load.audio('sfx_jump', './assets/sfx/sfx_jump.ogg');
+        this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
+        
     }
     create() {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
