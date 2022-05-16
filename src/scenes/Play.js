@@ -4,8 +4,8 @@ class Play extends Phaser.Scene {
     }
     preload () {
         //Visual
-        this.load.image('tile', './assets/images/tile.png');
-        this.load.image('player', './assets/images/player.png');
+        this.load.image('tile', './assets/images/Tile.png');
+        this.load.image('player', './assets/images/Player.png');
 
         //Audio
         this.load.audio('sfx_jump', './assets/sfx/sfx_jump.ogg');
