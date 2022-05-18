@@ -5,6 +5,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.walkTime = 0;
         scene.add.existing(this);
         console.log(this);
+
     }
     update() {
 
@@ -18,10 +19,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(keyRIGHT.isDown) {
             this.setVelocityX(200);
             this.walkTime++;
+            this.flipX = false;
         }
         else if(keyLEFT.isDown) {
             this.setVelocityX(-200);
             this.walkTime++;
+            this.flipX = true;
         }
         else {
             this.setVelocityX(0);

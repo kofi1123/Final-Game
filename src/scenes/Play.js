@@ -38,8 +38,18 @@ class Play extends Phaser.Scene {
         this.mainCamera.setDeadzone(200,200);
         //this.player.setVelocity(100,200);
         /*this.player.setVelocity(100, 200).setBounce(1, 1).setCollideWorldBounds(true).setGravityY(200);*/
+
+        this.idleTween = this.tweens.add({
+            targets: this.player,
+            scaleX: (0.9, 1.1),
+            scaleY: (1.1, 0.9),
+            duration: 1000,
+            repeat: -1,
+            yoyo: true
+        });
     }
     update() {
+
         this.player.update();
 
     }
