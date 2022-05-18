@@ -21,9 +21,12 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         
         //this.player = this.physics.add.image(200, 100, 'player');
+        //this.player = this.physics.add.sprite(200, 600, 'player');
         this.player = new Player(this, 200, 600, 'player')
         let playerGroup = this.physics.add.group([this.player]);
-        this.player.setCollideWorldBounds(true).setGravityY(1500)
+        this.player.setCollideWorldBounds(true).setGravityY(2000);
+        
+
         this.enemy1 = this.physics.add.image(400, 300, 'tile');
         let enemyGroup = this.physics.add.group([this.enemy1]);
         this.enemy1.setVelocity(100, 100).setGravity(100).setCollideWorldBounds(true);

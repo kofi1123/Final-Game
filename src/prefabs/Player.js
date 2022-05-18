@@ -11,14 +11,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.setVelocityY(-500);
             this.scene.sound.play('sfx_jump');
-            
-            //console.log(this.scene.input.keyboard.checkDown(keyUP, 10000));
         }
-        else if (keySPACE.isDown && keySPACE.getDuration() <= 300) {
+        else if (keySPACE.isDown && keySPACE.getDuration() <= 250) {
             this.setVelocityY(-500);
-        }
-        else if (keySPACE.isUp) {
-            this.setVelocityY(400);
         }
         if(keyRIGHT.isDown) {
             this.setVelocityX(200);
