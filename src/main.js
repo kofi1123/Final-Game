@@ -1,9 +1,9 @@
 let config = {
     type: Phaser.CANVAS,
-    width: 900,
-    height: 700,
+    width: 960,
+    height: 640,
     backgroundColor: '#000000',
-    scene: [Menu, Play/*, GameOver*/],
+    scene: [Menu, Play, Room2],
     fps: {
         target: 60,
         forceSetTimeOut: true
