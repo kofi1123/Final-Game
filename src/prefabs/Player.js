@@ -5,16 +5,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.walkTime = 0;
         scene.add.existing(this);
         console.log(this);
-
+        this.jumpCount = 2;
     }
     update() {
 
-        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
+        if(Phaser.Input.Keyboard.JustDown(keySPACE) && this.jumpCount > 0) {
             this.setVelocityY(-500);
             this.scene.sound.play('sfx_jump');
+            console.log("jump");
         }
-        else if (keySPACE.isDown && keySPACE.getDuration() <= 250) {
+        else if (keySPACE.isDown && keySPACE.getDuration() <= 250 && this.jumpCount > 0) {
             this.setVelocityY(-500);
+            console.log("jump2")
+        }
+        else if (Phaser.Input.Keyboard.JustUp(keySPACE)) {
+            console.log("this");
+            this.jumpCount -= 1;
         }
         if(keyRIGHT.isDown) {
             this.setVelocityX(200);
