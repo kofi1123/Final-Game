@@ -7,7 +7,6 @@ class Play extends Phaser.Scene {
         this.load.image('tile', './assets/images/Tile.png');
         this.load.image('player', './assets/images/Player.png');
         this.load.image('door', './assets/images/door.png');
-        this.load.image('invis', './assets/images/invisible.png')
 
         //Audio
         this.load.audio('sfx_jump', './assets/sfx/sfx_jump.ogg');
@@ -35,13 +34,11 @@ class Play extends Phaser.Scene {
 
         for (let child of this.landGroup.getChildren()) {
             child.setImmovable(true).setFriction(1)
-            console.log(child.x);
-            console.log(child.y);
         }
-        this.physics.add.collider(playerGroup, this.landGroup, (p,e) => {
+        this.physics.add.collider(playerGroup, this.landGroup, (p,l) => {
             if (  p.body.touching.down == true  ) {
-                this.player.jumpCount = 2;
-                console.log('Touched down');
+                this.player.jumpCount = jumpCount;
+                this.player.isJumping = false;
             }
         });
         this.mainCamera = this.cameras.main;

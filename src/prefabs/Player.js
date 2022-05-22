@@ -5,7 +5,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.walkTime = 0;
         scene.add.existing(this);
         console.log(this);
-        this.jumpCount = 2;
+        this.jumpCount = jumpCount;
+        this.extend = false;
+        this.isJumping = false;
     }
     update() {
 
@@ -13,8 +15,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(-500);
             this.scene.sound.play('sfx_jump');
             console.log("jump");
+            this.extend = true;
+            this.isJumping = true;
         }
-        else if (keySPACE.isDown && keySPACE.getDuration() <= 250 && this.jumpCount > 0) {
+        else if (this.extend && keySPACE.isDown && keySPACE.getDuration() <= 250 && this.jumpCount > 0) {
             this.setVelocityY(-500);
             console.log("jump2")
         }
@@ -22,6 +26,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             console.log("this");
             this.jumpCount -= 1;
         }
+        if (this.jumpCount <= 0) this.extend = false;
         if(keyRIGHT.isDown) {
             this.setVelocityX(200);
             this.walkTime++;
@@ -37,7 +42,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.walkTime = 0;
         }
 
-        if(this.walkTime % 20 == 1){
+        if(this.walkTime % 20 == 1 && !this.isJumping){
             this.scene.sound.play('sfx_walk');
         }
         //console.log(keySPACE.getDuration());
