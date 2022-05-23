@@ -10,7 +10,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.anims.create({
             key: 'playerRun',
-            frames: this.anims.generateFrameNumbers('playerRun', {frames: [0, 1, 2]}),
+            frames: this.anims.generateFrameNumbers('playerRun', {frames: [0, 1]}),
             frameRate: 10,
             repeat: -1
         });

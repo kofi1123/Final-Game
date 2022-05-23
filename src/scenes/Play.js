@@ -6,12 +6,14 @@ class Play extends Phaser.Scene {
         //Sprites
         this.load.image('tile', './assets/images/Tile.png');
         this.load.image('player', './assets/images/Player.png');
+        this.load.image('playerHead', './assets/images/playerHead.png');
         this.load.image('playerRise', './assets/images/playerRise.png');
         this.load.image('playerFall', './assets/images/playerFall.png');
         this.load.image('door', './assets/images/door.png');
 
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
+        this.load.spritesheet('playerHeadMove', './assets/animations/playerHeadMove.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
@@ -45,8 +47,10 @@ class Play extends Phaser.Scene {
         }); 
 
         this.player = new Player(this, 200, 600, 'player', this.playerEmitter).setOrigin(0,0);
-        let playerGroup = this.physics.add.group([this.player]);
+        this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
+        let playerGroup = this.physics.add.group([this.player, this.playerHead]);
         this.player.setFriction(1);
+        this.playerHead.setFriction(2);
         
 
 
@@ -67,7 +71,8 @@ class Play extends Phaser.Scene {
 
         //Tweens
         this.idleTween = this.tweens.add({
-            targets: this.player,
+            targets: this.player ,
+            targets: this.playerHead,
             scaleX: (0.9, 1.1),
             scaleY: (1.1, 0.9),
             duration: 1000,
@@ -82,6 +87,7 @@ class Play extends Phaser.Scene {
             this.door1.goNextScene();
         }
         this.player.update();
+        this.playerHead.update();
     }
     
     checkCollisionDoor(door) {
