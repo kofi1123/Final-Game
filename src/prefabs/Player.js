@@ -5,9 +5,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.walkTime = 0;
         this.jumped = false;
         this.moveAnim = false;
+        this.canAirDash = true;
         scene.add.existing(this);
         console.log(this);
-
+    
         this.anims.create({
             key: 'playerRun',
             frames: this.anims.generateFrameNumbers('playerRun', {frames: [0, 1]}),
@@ -48,9 +49,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
+        
+
 
         if(keyRIGHT.isDown) {
-            this.setVelocityX(200);
+            if(this.body.velocity.x < 200){
+                this.setVelocityX(200);
+            }
             this.walkTime++;
             this.flipX = false;
             if(!(this.moveAnim) && this.body.blocked.down) {
@@ -59,7 +64,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         else if(keyLEFT.isDown) {
-            this.setVelocityX(-200);
+            if(this.body.velocity.x > -200){
+                this.setVelocityX(-200);
+            }
             this.walkTime++;
             this.flipX = true;
             if(!(this.moveAnim) && this.body.blocked.down) {
@@ -68,9 +75,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         else {
-            this.setVelocityX(0);
             this.walkTime = 0; 
             if((this.body.blocked.down)){
+               this.setVelocityX(0);
                this.setTexture('player');
                this.moveAnim = false;
             }
@@ -79,6 +86,28 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(this.walkTime % 20 == 1 && this.body.blocked.down){
             this.scene.sound.play('sfx_walk');
         }
+
+        if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyA) && this.canAirDash){
+            this.setVelocityX(this.body.velocity.x-500);
+            this.canAirDash = false;
+            console.log("airDash A");
+        } else if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyD) && this.canAirDash){
+            this.setVelocityX(this.body.velocity.x+500);
+            this.canAirDash = false;
+            console.log("airDash D");
+        } else if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyS) && this.canAirDash) {
+            this.setVelocityY(this.body.velocity.y+500);
+            this.canAirDash = false;
+            console.log("airDash S");
+        } else if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyW) && this.canAirDash){
+            this.setVelocityY(this.body.velocity.y-500);
+            this.canAirDash = false;
+            console.log("airDash W");
+        }
         //console.log(keySPACE.getDuration());
+        if(this.body.blocked.down){
+            this.canAirDash = true ;
+        }
+        //console.log("x Velocity = " + this.body.velocity.x + " y Velocity = " + this.body.velocity.y);
     }
 }

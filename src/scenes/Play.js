@@ -32,6 +32,11 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
         
         this.playerEmitter = this.add.particles('grayPart').createEmitter({
             x: 400,
@@ -51,16 +56,12 @@ class Play extends Phaser.Scene {
         let playerGroup = this.physics.add.group([this.player, this.playerHead]);
         this.player.setFriction(1);
         this.playerHead.setFriction(2);
-        
-
-
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true).setGravityY(2000);
         this.bgRight = new Block(this, -32 , -32, 'tile', undefined, 32, 22, true);
         this.block1 = new Block(this, 320, 18 * this.pixelSize, 'tile', undefined, 5, 2, false);
         this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room2').setOrigin(0,0);
         this.enemyGroup = this.physics.add.group(this.block1.block);
-
         for (let child of this.enemyGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
@@ -68,7 +69,6 @@ class Play extends Phaser.Scene {
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
-
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,
@@ -79,8 +79,6 @@ class Play extends Phaser.Scene {
             repeat: -1,
             yoyo: true
         });
-
-
     }
     update() {
         if (this.checkCollisionDoor(this.door1)) {
