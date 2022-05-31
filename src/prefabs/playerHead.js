@@ -21,8 +21,6 @@ class playerHead extends Phaser.Physics.Arcade.Sprite {
 
     }
     update() {
-
-
         if(keyRIGHT.isDown) {
             this.setVelocityX(200);
             this.walkTime++;
