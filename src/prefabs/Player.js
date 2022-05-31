@@ -102,6 +102,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(this.body.blocked.down){
             this.canAirDash = true;
         }
+        if(!this.canAirDash){
+            this.setTexture('playerDash');
+        }
         //console.log("x Velocity = " + this.body.velocity.x + " y Velocity = " + this.body.velocity.y);
     }
 }

@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
         this.load.image('playerHead', './assets/images/playerHead.png');
         this.load.image('playerRise', './assets/images/playerRise.png');
         this.load.image('playerFall', './assets/images/playerFall.png');
+        this.load.image('playerDash', './assets/images/playerDash.png');
         this.load.image('door', './assets/images/door.png');
         this.load.image('key', './assets/images/key.png');
 
