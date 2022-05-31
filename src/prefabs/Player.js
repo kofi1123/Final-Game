@@ -95,15 +95,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(this.body.velocity.x+500);
             this.canAirDash = false;
             console.log("airDash D");
-        } else if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyS) && this.canAirDash) {
-            this.setVelocityY(this.body.velocity.y+500);
-            this.canAirDash = false;
-            console.log("airDash S");
-        } else if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyW) && this.canAirDash){
-            this.setVelocityY(this.body.velocity.y-500);
-            this.canAirDash = false;
-            console.log("airDash W");
-        }
+        } 
         //console.log(keySPACE.getDuration());
         if(this.body.blocked.down){
             this.canAirDash = true ;
