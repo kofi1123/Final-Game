@@ -1,6 +1,6 @@
-class Play extends Phaser.Scene {
+class Room3 extends Phaser.Scene {
     constructor () {
-        super("play");
+        super("room3");
     }
     preload () {
         //Sprites
@@ -10,7 +10,6 @@ class Play extends Phaser.Scene {
         this.load.image('playerRise', './assets/images/playerRise.png');
         this.load.image('playerFall', './assets/images/playerFall.png');
         this.load.image('door', './assets/images/door.png');
-        this.load.image('key', './assets/images/key.png');
 
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
@@ -44,25 +43,23 @@ class Play extends Phaser.Scene {
             y: 300,
             speed: { min: -800, max: 800 },
             angle: { min: 0, max: 360 },
-            scale: { start: 0.5, end: 0 } ,
+            scale: { start: 0.5, end: 0 },
             //blendMode: 'SCREEN',
             //active: false,
-             lifespan: 500,
+            lifespan: 500,
             frequency: -1,
             quantity: 50
-        }); 
-
-        this.player = new Player(this, 200, 500, 'player', this.playerEmitter).setOrigin(0,0);
+        });
+        this.player = new Player(this, 200, 600, 'player', this.playerEmitter).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
         this.player.setFriction(1);
         this.player.setBounce(0.2);
-        this.player.setCollideWorldBounds(false).setGravityY(2000);
+        this.player.setCollideWorldBounds(true).setGravityY(2000);
         this.landGroup = this.physics.add.group();
         this.bgRight = new Block(this, -32 , -32, 'tile', undefined, 32, 22, true, this.landGroup);
-        this.block1 = new Block(this, 320, 18 * this.pixelSize, 'tile', undefined, 5, 2, false, this.landGroup);
+        this.block1 = new Block(this, 320, 17 * this.pixelSize, 'tile', undefined, 4, 3, false, this.landGroup);
         this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room2').setOrigin(0,0);
-        this.key = new Key(this, 12 * this.pixelSize, 17 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         for (let child of this.landGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
@@ -87,9 +84,22 @@ class Play extends Phaser.Scene {
         });
     }
     update() {
-        this.key.update();
-        this.door1.update();
+        if (this.checkCollisionDoor(this.door1)) {
+            this.door1.goNextScene();
+        }
         this.player.update();
         //this.playerHead.update();
+    }
+    
+    checkCollisionDoor(door) {
+        if (this.player.x < door.x + door.width &&
+            this.player.x + this.player.width > door.x &&
+            this.player.y < door.y + door.height &&
+            this.player.height + this.player.y > door.y) {
+                return true;
+            }
+        else {
+            return false;
+        }
     }
 }

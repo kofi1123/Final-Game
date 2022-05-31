@@ -7,7 +7,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.moveAnim = false;
         this.canAirDash = true;
         scene.add.existing(this);
-        console.log(this);
     
         this.anims.create({
             key: 'playerRun',
@@ -20,7 +19,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
     update() {
-
         if(!(this.jumped) && Phaser.Input.Keyboard.JustDown(keySPACE) && (this.body.blocked.down)) {
             this.setVelocityY(-500);
             this.scene.sound.play('sfx_jump');
@@ -49,13 +47,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
-        
-
-
         if(keyRIGHT.isDown) {
-            if(this.body.velocity.x < 200){
+            /*if(this.body.velocity.x < 200){
                 this.setVelocityX(200);
-            }
+            }*/
+            this.setVelocityX(200);
             this.walkTime++;
             this.flipX = false;
             if(!(this.moveAnim) && this.body.blocked.down) {
@@ -64,9 +60,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         else if(keyLEFT.isDown) {
-            if(this.body.velocity.x > -200){
+            /*if(this.body.velocity.x > -200){
                 this.setVelocityX(-200);
-            }
+            }*/
+            this.setVelocityX(-200);
             this.walkTime++;
             this.flipX = true;
             if(!(this.moveAnim) && this.body.blocked.down) {
@@ -75,11 +72,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         else {
-            this.walkTime = 0; 
+            this.walkTime = 0;
+            //this.setVelocityX(0);
             if((this.body.blocked.down)){
-               this.setVelocityX(0);
-               this.setTexture('player');
-               this.moveAnim = false;
+                this.setTexture('player');
+                this.moveAnim = false;
             }
         }
 
