@@ -61,7 +61,10 @@ class Play extends Phaser.Scene {
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
         this.bgRight = new Block(this, -32 , -32, 'tile', undefined, 32, 22, true, this.landGroup);
-        this.block1 = new Block(this, 320, 18 * this.pixelSize, 'tile', undefined, 5, 2, false, this.landGroup);
+        this.block1 = new Block(this, 10 * this.pixelSize, 18 * this.pixelSize, 'tile', undefined, 5, 2, false, this.landGroup);
+        this.block2 = new Block(this, 14 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        this.block3 = new Block(this, 0 * this.pixelSize, 14 * this.pixelSize, 'tile', undefined, 7, 1, false, this.landGroup);
+        new Block(this, 12 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 2, 1, false, this.landGroup);
         this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room2').setOrigin(0,0);
         this.key = new Key(this, 12 * this.pixelSize, 17 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         for (let child of this.landGroup.getChildren()) {

@@ -10,6 +10,7 @@ class Room2 extends Phaser.Scene {
         this.load.image('playerRise', './assets/images/playerRise.png');
         this.load.image('playerFall', './assets/images/playerFall.png');
         this.load.image('door', './assets/images/door.png');
+        this.load.image('spike', './assets/images/spike.png');
 
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
@@ -51,17 +52,25 @@ class Room2 extends Phaser.Scene {
             quantity: 50
         }); 
 
-        this.player = new Player(this, 200, 600, 'player', this.playerEmitter).setOrigin(0,0);
+        this.player = new Player(this, 100, 200, 'player', this.playerEmitter).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
         this.player.setFriction(1);
         this.player.setBounce(0.2);
-        this.player.setCollideWorldBounds(true).setGravityY(2000);
+        this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
-        this.bgRight = new Block(this, -32 , -32, 'tile', undefined, 32, 22, true, this.landGroup);
-        this.block1 = new Block(this, 320, 18 * this.pixelSize, 'tile', undefined, 4, 2, false, this.landGroup);
+        this.spikeGroup = this.physics.add.group();
+        new Block(this, -32 , -32, 'tile', undefined, 50, 22, true, this.landGroup);
+        new Block(this,  3 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this,  11 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this,  19 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this, 4 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
+        new Block(this, 12 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
         this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room3').setOrigin(0,0);
         for (let child of this.landGroup.getChildren()) {
+            child.setImmovable(true).setFriction(1);
+        }
+        for (let child of this.spikeGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
         this.physics.add.collider(playerGroup, this.landGroup, (p,l) => {
@@ -69,6 +78,9 @@ class Room2 extends Phaser.Scene {
                 this.player.jumpCount = jumpCount;
                 this.player.isJumping = false;
             }
+        });
+        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
+            this.scene.restart();
         });
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
@@ -85,9 +97,8 @@ class Room2 extends Phaser.Scene {
         });
     }
     update() {
-        if (this.checkCollisionDoor(this.door1)) {
-            this.door1.goNextScene();
-        }
+        //this.key.update();
+        this.door1.update();
         this.player.update();
         //this.playerHead.update();
     }
