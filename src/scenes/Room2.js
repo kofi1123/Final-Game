@@ -67,6 +67,7 @@ class Room2 extends Phaser.Scene {
         new Block(this, 4 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
         new Block(this, 12 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
         this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room3').setOrigin(0,0);
+        this.key = new Key(this, 15 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         for (let child of this.landGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
@@ -97,7 +98,7 @@ class Room2 extends Phaser.Scene {
         });
     }
     update() {
-        //this.key.update();
+        this.key.update();
         this.door1.update();
         this.player.update();
         //this.playerHead.update();
