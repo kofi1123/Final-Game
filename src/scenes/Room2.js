@@ -33,9 +33,6 @@ class Room2 extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         
@@ -61,13 +58,20 @@ class Room2 extends Phaser.Scene {
         this.landGroup = this.physics.add.group();
         this.spikeGroup = this.physics.add.group();
         new Block(this, -32 , -32, 'tile', undefined, 50, 22, true, this.landGroup);
-        new Block(this,  3 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this,  0 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 4, 10, false, this.landGroup);
         new Block(this,  11 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
         new Block(this,  19 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this,  27 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this,  35 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this,  43 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
         new Block(this, 4 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
         new Block(this, 12 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
-        this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room3').setOrigin(0,0);
+        new Block(this, 20 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
+        new Block(this, 28 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
+        new Block(this, 36 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 7, 1, false, this.spikeGroup);
+        this.door1 = new Door(this, 46 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room3', 2).setOrigin(0,0);
         this.key = new Key(this, 15 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.key2 = new Key(this, 31 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         for (let child of this.landGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
@@ -99,6 +103,7 @@ class Room2 extends Phaser.Scene {
     }
     update() {
         this.key.update();
+        this.key2.update();
         this.door1.update();
         this.player.update();
         //this.playerHead.update();

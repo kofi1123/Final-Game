@@ -1,4 +1,3 @@
-console.log("Hello from menu");
 class Menu extends Phaser.Scene {
     constructor() {
         super("menu");
@@ -18,20 +17,16 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Defragmentation', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2, 'Use arrows to move, (SPACE) to jump, (D) to Dash', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press Space to Start', menuConfig).setOrigin(0.5);
         
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.scene.start('play');    
-        }
-        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+        if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.scene.start('play');    
         }
     }

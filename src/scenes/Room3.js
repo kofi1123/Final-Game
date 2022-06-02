@@ -10,6 +10,7 @@ class Room3 extends Phaser.Scene {
         this.load.image('playerRise', './assets/images/playerRise.png');
         this.load.image('playerFall', './assets/images/playerFall.png');
         this.load.image('door', './assets/images/door.png');
+        this.load.image('spike', './assets/images/spike.png');
 
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
@@ -32,9 +33,6 @@ class Room3 extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         
@@ -59,7 +57,8 @@ class Room3 extends Phaser.Scene {
         this.landGroup = this.physics.add.group();
         this.bgRight = new Block(this, -32 , -32, 'tile', undefined, 32, 22, true, this.landGroup);
         this.block1 = new Block(this, 320, 17 * this.pixelSize, 'tile', undefined, 4, 3, false, this.landGroup);
-        this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room2').setOrigin(0,0);
+        this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room2', 1).setOrigin(0,0);
+        this.key = new Key(this, 15 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         for (let child of this.landGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
@@ -84,9 +83,8 @@ class Room3 extends Phaser.Scene {
         });
     }
     update() {
-        if (this.checkCollisionDoor(this.door1)) {
-            this.door1.goNextScene();
-        }
+        this.key.update();
+        this.door1.update();
         this.player.update();
         //this.playerHead.update();
     }

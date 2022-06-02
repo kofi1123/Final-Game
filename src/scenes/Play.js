@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.load.image('playerDash', './assets/images/playerDash.png');
         this.load.image('door', './assets/images/door.png');
         this.load.image('key', './assets/images/key.png');
+        this.load.image('spike', './assets/images/spike.png');
 
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
@@ -34,9 +35,6 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         
@@ -60,13 +58,18 @@ class Play extends Phaser.Scene {
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
+        this.spikeGroup = this.physics.add.group();
         this.bgRight = new Block(this, -32 , -32, 'tile', undefined, 32, 22, true, this.landGroup);
-        this.block1 = new Block(this, 10 * this.pixelSize, 18 * this.pixelSize, 'tile', undefined, 5, 2, false, this.landGroup);
-        this.block2 = new Block(this, 14 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
-        this.block3 = new Block(this, 0 * this.pixelSize, 14 * this.pixelSize, 'tile', undefined, 7, 1, false, this.landGroup);
+        new Block(this, 10 * this.pixelSize, 18 * this.pixelSize, 'tile', undefined, 5, 2, false, this.landGroup);
+        new Block(this, 14 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
+        new Block(this, 0 * this.pixelSize, 14 * this.pixelSize, 'tile', undefined, 7, 1, false, this.landGroup);
+        new Block(this, 20 * this.pixelSize, 18 * this.pixelSize, 'tile', undefined, 10, 2, false, this.landGroup);
+        new Block(this, 20 * this.pixelSize, 5 * this.pixelSize, 'tile', undefined, 10, 10, false, this.landGroup);
         new Block(this, 12 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 2, 1, false, this.landGroup);
-        this.door1 = new Door(this, 28 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room2').setOrigin(0,0);
+        new Block(this, 15 * this.pixelSize, 18 * this.pixelSize, 'spike', undefined, 5, 2, false, this.spikeGroup);
+        this.door1 = new Door(this, 28 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room2', 2).setOrigin(0,0);
         this.key = new Key(this, 12 * this.pixelSize, 17 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.key2 = new Key(this, 29 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         for (let child of this.landGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
@@ -75,6 +78,9 @@ class Play extends Phaser.Scene {
                 this.player.jumpCount = jumpCount;
                 this.player.isJumping = false;
             }
+        });
+        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
+            this.scene.restart();
         });
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
@@ -92,8 +98,12 @@ class Play extends Phaser.Scene {
     }
     update() {
         this.key.update();
+        this.key2.update();
         this.door1.update();
         this.player.update();
+        if (Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.scene.restart();
+        }
         //this.playerHead.update();
     }
 }
