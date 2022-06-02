@@ -5,7 +5,6 @@ class playerHead extends Phaser.Physics.Arcade.Sprite {
         this.walkTime = 0;
         this.jumped = false;
         scene.add.existing(this);
-        console.log(this);
         
 
         this.anims.create({

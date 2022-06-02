@@ -13,9 +13,8 @@ let config = {
     }
 };
 
-let keyUP, keyDOWN, keyLEFT, keyRIGHT, keyR, keySPACE, keyD;
+let keyLEFT, keyRIGHT, keyR, keySPACE, keyD;
 let borderUISize = config.height / 15;
 let borderPadding = config.height / 7;
 let game = new Phaser.Game(config);
-let jumpCount = 2;
 let finalScore;

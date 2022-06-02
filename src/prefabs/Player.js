@@ -50,14 +50,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyD) && this.canAirDash){
             if(!this.flipX){
-                this.setVelocityX(/*this.body.velocity.x+*/500);
+                if (this.body.velocity.y < 0) {
+                    this.setVelocityX(500);
+                }
+                else this.setVelocity(500, 0);
             } else {
-                this.setVelocityX(/*this.body.velocity.x*/-500);
+                if (this.body.velocity.y < 0) this.setVelocityX(-500);
+                else this.setVelocity(-500, 0);
             }
             this.canAirDash = false;
             
-        } 
-
+        }
 
         if(keyRIGHT.isDown) {
             if(this.body.velocity.x < 200){
@@ -84,9 +87,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else {
             this.walkTime = 0; 
             if((this.body.blocked.down)){
-               this.setVelocityX(0);
-               this.setTexture('player');
-               this.moveAnim = false;
+                this.setVelocityX(0);
+                this.setTexture('player');
+                this.moveAnim = false;
             }
         }
 
@@ -94,14 +97,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.scene.sound.play('sfx_walk');
         }
 
-        
-        //console.log(keySPACE.getDuration());
         if(this.body.blocked.down){
             this.canAirDash = true;
         }
         if(!this.canAirDash){
             this.setTexture('playerDash');
         }
-        //console.log("x Velocity = " + this.body.velocity.x + " y Velocity = " + this.body.velocity.y);
     }
 }

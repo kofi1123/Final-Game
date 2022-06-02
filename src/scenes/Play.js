@@ -31,8 +31,6 @@ class Play extends Phaser.Scene {
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
@@ -50,11 +48,10 @@ class Play extends Phaser.Scene {
             quantity: 50
         }); 
 
-        this.player = new Player(this, 200, 500, 'player', this.playerEmitter).setOrigin(0,0);
+        this.player = new Player(this, 2 * this.pixelSize, 18 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
-        this.player.setFriction(1);
-        this.player.setBounce(0.2);
+        this.player.setFriction(0);
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
         this.spikeGroup = this.physics.add.group();
@@ -78,12 +75,7 @@ class Play extends Phaser.Scene {
         for (let child of this.spikeGroup.getChildren()) {
             child.setImmovable(true);
         }
-        this.physics.add.collider(playerGroup, this.landGroup, (p,l) => {
-            if (  p.body.touching.down == true  ) {
-                this.player.jumpCount = jumpCount;
-                this.player.isJumping = false;
-            }
-        });
+        this.physics.add.collider(playerGroup, this.landGroup);
         this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
             this.scene.restart();
         });
