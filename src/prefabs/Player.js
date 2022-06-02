@@ -7,7 +7,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.moveAnim = false;
         this.canAirDash = true;
         scene.add.existing(this);
-        console.log(this);
     
         this.anims.create({
             key: 'playerRun',
@@ -52,10 +51,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyD) && this.canAirDash){
             if(!this.flipX){
                 this.setVelocityX(/*this.body.velocity.x+*/500);
-                console.log("airDash +");
             } else {
                 this.setVelocityX(/*this.body.velocity.x*/-500);
-                console.log("airDash -");
             }
             this.canAirDash = false;
             

@@ -10,7 +10,6 @@ class Door extends Phaser.GameObjects.Sprite {
             this.scene.player.x + this.scene.player.width > this.x &&
             this.scene.player.y < this.y + this.height &&
             this.scene.player.height + this.scene.player.y > this.y) {
-                console.log(this.collected)
                 if(this.collected == 0) this.scene.scene.start(this.nextScene);
                 else this.scene.scene.restart();
             }
