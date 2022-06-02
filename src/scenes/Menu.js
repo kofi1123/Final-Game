@@ -26,9 +26,10 @@ class Menu extends Phaser.Scene {
         
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+        //Background music
         this.musBgm = this.sound.add('mus_bgm', {loop: true});
         this.musBgm.play();
-        this.musBgm.volume -= 0.7;
+        this.musBgm.volume -= 0.9;
     }
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {

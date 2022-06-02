@@ -37,7 +37,7 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        //Background music
+        
         
         
         this.playerEmitter = this.add.particles('grayPart').createEmitter({
