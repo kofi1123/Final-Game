@@ -74,10 +74,10 @@ class Room3 extends Phaser.Scene {
             yoyo: true
         });
     }
-    update() {
+    update(time, delta) {
         this.key.update();
         this.door1.update();
-        this.player.update();
+        this.player.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }

@@ -8,7 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.canAirDash = true;
         this.coyoteTime = 200;
         this.coyoteTimeCounter = this.coyoteTime;
-        this.jumpBufferTime = 150;
+        this.jumpBufferTime = 170;
         this.jumpBufferCounter = this.jumpBufferTime;
         this.spaceTime = 0;
         scene.add.existing(this);
@@ -22,7 +22,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
     update(time, delta) {
-        console.log(this.jumpBufferCounter)
         if (this.body.blocked.down) {
             this.coyoteTimeCounter = this.coyoteTime;
         }

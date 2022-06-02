@@ -96,7 +96,7 @@ class Room2 extends Phaser.Scene {
             yoyo: true
         });
     }
-    update() {
+    update(time, delta) {
         this.canvasText.text = ': ' + (2 - this.door1.collected) + '/2';
         if (this.door1.collected == 0) {
             this.canvasBg.fillColor = 0x5ac947;
@@ -104,7 +104,7 @@ class Room2 extends Phaser.Scene {
         this.key.update();
         this.key2.update();
         this.door1.update();
-        this.player.update();
+        this.player.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
