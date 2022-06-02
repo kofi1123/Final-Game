@@ -26,7 +26,6 @@ class Room3 extends Phaser.Scene {
     }
     create() {
         this.pixelSize = 32;
-        this.padding = 16;
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -86,6 +85,9 @@ class Room3 extends Phaser.Scene {
         this.key.update();
         this.door1.update();
         this.player.update();
+        if (Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.scene.restart();
+        }
         //this.playerHead.update();
     }
     

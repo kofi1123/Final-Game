@@ -26,7 +26,6 @@ class Room2 extends Phaser.Scene {
     }
     create() {
         this.pixelSize = 32;
-        this.padding = 16;
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -72,11 +71,14 @@ class Room2 extends Phaser.Scene {
         this.door1 = new Door(this, 46 * this.pixelSize, 17 * this.pixelSize, 'door', undefined, 'room3', 2).setOrigin(0,0);
         this.key = new Key(this, 15 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.key2 = new Key(this, 31 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.canvasBg = this.add.rectangle(1.5 * this.pixelSize, 1.5 * this.pixelSize , 5 * this.pixelSize, 2 * this.pixelSize, 0x7d7d7d).setOrigin(0,0).setScrollFactor(0);
+        this.canvas = this.add.sprite(2 * this.pixelSize, 2 * this.pixelSize, 'key').setOrigin(0, 0).setScrollFactor(0);
+        this.canvasText = this.add.text(3 * this.pixelSize, 2 * this.pixelSize, ': 0/2', {fontSize: '32px'}).setOrigin(0,0).setScrollFactor(0);
         for (let child of this.landGroup.getChildren()) {
             child.setImmovable(true).setFriction(1);
         }
         for (let child of this.spikeGroup.getChildren()) {
-            child.setImmovable(true).setFriction(1);
+            child.setImmovable(true);
         }
         this.physics.add.collider(playerGroup, this.landGroup, (p,l) => {
             if (  p.body.touching.down == true  ) {
@@ -102,10 +104,17 @@ class Room2 extends Phaser.Scene {
         });
     }
     update() {
+        this.canvasText.text = ': ' + (2 - this.door1.collected) + '/2';
+        if (this.door1.collected == 0) {
+            this.canvasBg.fillColor = 0x5ac947;
+        }
         this.key.update();
         this.key2.update();
         this.door1.update();
         this.player.update();
+        if (Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.scene.restart();
+        }
         //this.playerHead.update();
     }
     
