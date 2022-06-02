@@ -6,6 +6,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.jumped = false;
         this.moveAnim = false;
         this.canAirDash = true;
+        this.coyoteTime = 200;
+        this.coyoteTimeCounter = this.coyoteTime;
+        this.jumpBufferTime = 150;
+        this.jumpBufferCounter = this.jumpBufferTime;
+        this.spaceTime = 0;
         scene.add.existing(this);
     
         this.anims.create({
@@ -15,13 +20,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             repeat: -1
         });
 
-
-
     }
-    update() {
-
-        if(!(this.jumped) && Phaser.Input.Keyboard.JustDown(keySPACE) && (this.body.blocked.down)) {
+    update(time, delta) {
+        console.log(this.jumpBufferCounter)
+        if (this.body.blocked.down) {
+            this.coyoteTimeCounter = this.coyoteTime;
+        }
+        else {
+            this.coyoteTimeCounter -= delta;
+        }
+        if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
+            this.jumpBufferCounter = this.jumpBufferTime;
+        }
+        else {
+            this.jumpBufferCounter -= delta;
+        }
+        if(!(this.jumped) && this.jumpBufferCounter > 0 && this.coyoteTimeCounter > 0) {
             this.setVelocityY(-500);
+            this.jumpBufferCounter = 0;
             this.scene.sound.play('sfx_jump');
             this.setTexture('playerRise');
             this.jumped = true;
@@ -31,22 +47,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             //this.emitter.setPosition(this.x, this.y);
             //this.emitter.explode();     
         }
-        else if(this.jumped && keySPACE.isDown && keySPACE.getDuration() <= 250 && !(this.body.blocked.down)) {
+        else if(this.jumped && keySPACE.isDown && this.spaceTime <= 250 && !(this.body.blocked.down)) {
+            this.spaceTime += delta;
             this.setTexture('playerRise');
             this.setVelocityY(-500);
-            this.anims.stop(); 
+            this.anims.stop();
+            this.coyoteTimeCounter = 0;
         }
-        else if(this.jumped && (!(keySPACE.isDown) || keySPACE.getDuration() > 350)){
+        else if(this.jumped && (!(keySPACE.isDown) || this.spaceTime > 350)){
             this.jumped = false;
             this.setTexture('playerFall');
             this.moveAnim = false;
+            this.spaceTime = 0;
         }
-        else if(this.jumped && this.body.blocked.down){
+        /*else if(this.jumped && this.body.blocked.down){
             this.jumped = false;
+            console.log("here")
             if(keyRIGHT.isDown || keyLEFT.isDown) {
                 this.anims.play('playerRun');
             }
-        }
+        }*/
 
         if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyD) && this.canAirDash){
             if(!this.flipX){
