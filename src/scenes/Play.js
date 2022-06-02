@@ -22,9 +22,10 @@ class Play extends Phaser.Scene {
         this.load.image('grayPart', 'assets/images/particle.png');
 
         //Audio
-        this.load.audio('sfx_jump', './assets/sfx/sfx_jump.ogg');
+        this.load.audio('sfx_jump', './assets/sfx/sfx_jump2.ogg');
         this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
-        this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
+        this.load.audio('sfx_dash', './assets/sfx/sfx_dash.ogg');
+        this.load.audio('sfx_collectible', './assets/sfx/sfx_collectible.ogg');
 
         
         

@@ -68,6 +68,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }*/
 
         if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyD) && this.canAirDash){
+            this.scene.sound.play('sfx_dash');
             if(!this.flipX){
                 if (this.body.velocity.y < 0) {
                     this.setVelocityX(500);

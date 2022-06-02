@@ -13,6 +13,7 @@ class Key extends Phaser.GameObjects.Sprite {
             this.visible) {
                 this.door.collected -= 1;
                 this.setVisible(false);
+                this.scene.sound.play('sfx_collectible');
         }
     }
 }
