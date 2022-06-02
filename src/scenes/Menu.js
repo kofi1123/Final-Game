@@ -2,8 +2,9 @@ class Menu extends Phaser.Scene {
     constructor() {
         super("menu");
     }
-    /*preload() {
-    }*/
+    preload() {
+        this.load.audio('mus_bgm', './assets/sfx/mus_bgm.ogg');
+    }
     create(){
         let menuConfig = {
             fontFamily: 'Courier',
@@ -24,6 +25,10 @@ class Menu extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press Space to Start', menuConfig).setOrigin(0.5);
         
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        this.musBgm = this.sound.add('mus_bgm', {loop: true});
+        this.musBgm.play();
+        this.musBgm.volume -= 0.7;
     }
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {

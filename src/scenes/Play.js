@@ -24,6 +24,9 @@ class Play extends Phaser.Scene {
         //Audio
         this.load.audio('sfx_jump', './assets/sfx/sfx_jump.ogg');
         this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
+        this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
+
+        
         
     }
     create() {
@@ -34,6 +37,8 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        //Background music
+        
         
         this.playerEmitter = this.add.particles('grayPart').createEmitter({
             x: 400,
