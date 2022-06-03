@@ -13,12 +13,74 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.spaceTime = 0;
         scene.add.existing(this);
     
+        //Animations
         this.anims.create({
             key: 'playerRun',
             frames: this.anims.generateFrameNumbers('playerRun', {frames: [0, 1]}),
             frameRate: 10,
             repeat: -1
         });
+
+        //Particles
+        this.jumpPart = this.scene.add.particles('grayPart').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -180, max: 180 },
+            angle: { min: 180, max: 360 },
+            scale: { start: 0.25, end: 0 } ,
+            depth: -10,
+            //blendMode: 'SCREEN',
+            //active: false,
+             lifespan: 400,
+            frequency: -1,
+            quantity: 5
+        }); 
+        this.jumpPart.setAlpha(0.5);
+
+        this.walkPart = this.scene.add.particles('grayPart').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -180, max: 180 },
+            angle: { min: 180, max: 360 },
+            scale: { start: 0.25, end: 0 } ,
+            depth: -10,
+            //blendMode: 'SCREEN',
+            //active: false,
+             lifespan: 300,
+            frequency: -1,
+            quantity: 3
+        }); 
+        this.walkPart.setAlpha(0.3);
+
+        this.rightDashPart = this.scene.add.particles('grayPart').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: 30, max: 400 },
+            angle: { min: 170, max: 190 },
+            scale: { start: 0.25, end: 0 } ,
+            depth: -10,
+            //blendMode: 'SCREEN',
+            //active: false,
+             lifespan: 500,
+            frequency: -1,
+            quantity: 12
+        }); 
+        this.rightDashPart.setAlpha(0.7);
+
+        this.leftDashPart = this.scene.add.particles('grayPart').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -30, max: -400 },
+            angle: { min: 10, max: -10 },
+            scale: { start: 0.25, end: 0 } ,
+            depth: -10,
+            //blendMode: 'SCREEN',
+            //active: false,
+             lifespan: 500,
+            frequency: -1,
+            quantity: 12
+        }); 
+        this.leftDashPart.setAlpha(0.7);
 
     }
     update(time, delta) {
@@ -43,8 +105,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.moveAnim = false;
             this.anims.stop();  
 
-            //this.emitter.setPosition(this.x, this.y);
-            //this.emitter.explode();     
+            this.jumpPart.setPosition(this.x, this.y + 64);
+            this.jumpPart.explode();     
         }
         else if(this.jumped && keySPACE.isDown && this.spaceTime <= 250 && !(this.body.blocked.down)) {
             this.spaceTime += delta;
@@ -70,11 +132,17 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyD) && this.canAirDash){
             this.scene.sound.play('sfx_dash');
             if(!this.flipX){
+                this.rightDashPart.setPosition(this.x + 16, this.y + 16);
+                this.rightDashPart.explode();
                 if (this.body.velocity.y < 0) {
                     this.setVelocityX(500);
                 }
-                else this.setVelocity(500, 0);
+                else {
+                    this.setVelocity(500, 0);
+                } 
             } else {
+                this.leftDashPart.setPosition(this.x + 16, this.y + 16);
+                this.leftDashPart.explode();  
                 if (this.body.velocity.y < 0) this.setVelocityX(-500);
                 else this.setVelocity(-500, 0);
             }
@@ -115,6 +183,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         if(this.walkTime % 20 == 1 && this.body.blocked.down){
             this.scene.sound.play('sfx_walk');
+            this.walkPart.setPosition(this.x, this.y + 64);
+            this.walkPart.explode();  
         }
 
         if(this.body.blocked.down){

@@ -20,6 +20,7 @@ class Play extends Phaser.Scene {
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
+        this.load.image('bluePart', 'assets/images/bluePart.png');
 
         //Audio
         this.load.audio('sfx_jump', './assets/sfx/sfx_jump2.ogg');
@@ -38,21 +39,6 @@ class Play extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        
-        
-        
-        this.playerEmitter = this.add.particles('grayPart').createEmitter({
-            x: 400,
-            y: 300,
-            speed: { min: -800, max: 800 },
-            angle: { min: 0, max: 360 },
-            scale: { start: 0.5, end: 0 } ,
-            //blendMode: 'SCREEN',
-            //active: false,
-             lifespan: 500,
-            frequency: -1,
-            quantity: 50
-        }); 
 
         this.player = new Player(this, 2 * this.pixelSize, 18 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
