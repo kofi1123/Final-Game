@@ -4,6 +4,8 @@ class Key extends Phaser.GameObjects.Sprite {
         this.scene = scene;
         this.door = door;
         scene.add.existing(this);
+        this.initY = this.y;
+        this.time = 0;
     }
     update() {
         if (this.scene.player.x < this.x + this.width &&
@@ -15,5 +17,7 @@ class Key extends Phaser.GameObjects.Sprite {
                 this.setVisible(false);
                 this.scene.sound.play('sfx_collectible');
         }
+        this.y = this.initY + Math.sin(this.time) * 4;
+        this.time += 0.075;
     }
 }

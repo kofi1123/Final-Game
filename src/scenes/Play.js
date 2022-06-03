@@ -68,7 +68,7 @@ class Play extends Phaser.Scene {
         new Block(this, 20 * this.pixelSize, 18 * this.pixelSize, 'tile', undefined, 10, 2, false, this.landGroup);
         new Block(this, 20 * this.pixelSize, 5 * this.pixelSize, 'tile', undefined, 10, 10, false, this.landGroup);
         new Block(this, 12 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 2, 1, false, this.landGroup);
-        new Block(this, 15 * this.pixelSize, 18 * this.pixelSize, 'spike', undefined, 5, 2, false, this.spikeGroup);
+        new Block(this, 15 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 5, 1, false, this.spikeGroup);
         this.door1 = new Door(this, 28 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room2', 2).setOrigin(0,0);
         this.key = new Key(this, 12 * this.pixelSize, 17 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.key2 = new Key(this, 29 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
