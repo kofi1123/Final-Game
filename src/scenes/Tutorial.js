@@ -17,6 +17,7 @@ class Tutorial extends Phaser.Scene {
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet('playerHeadMove', './assets/animations/playerHeadMove.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('deathAnim', './assets/animations/deathAnim.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 4});
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
@@ -38,6 +39,12 @@ class Tutorial extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        this.anims.create({
+            key: 'deathAnim',
+            frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
+            frameRate: 20,
+        });
 
         this.text1 = this.add.text(9.5 * this.pixelSize, 4 * this.pixelSize, 'Press Space to Jump', {fontSize: '25px'}).setOrigin(0.5);
         this.text2 = this.add.text(24.5 * this.pixelSize, 4 * this.pixelSize, 'Hold Space to Jump Longer', {fontSize: '25px'}).setOrigin(0.5);
@@ -74,6 +81,20 @@ class Tutorial extends Phaser.Scene {
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
+        this.mainCamera.fadeIn(800);
+        this.mainCamera.setBounds(-3 * this.pixelSize, -4 * this.pixelSize, 83 * this.pixelSize, 11 * this.pixelSize);
+        this.time.delayedCall(800, () => {
+            this.player.canMove = true; 
+        }, null, this);
+        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
+            let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            end.anims.play('deathAnim');
+            this.player.destroy();
+            this.mainCamera.fadeOut(800);
+            this.time.delayedCall(800, () => {
+                this.scene.restart();
+            }, null, this);
+        });
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,

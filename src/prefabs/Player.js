@@ -12,6 +12,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.jumpBufferCounter = 0;
         this.spaceTime = 0;
         this.dash = 500;
+        this.canMove = false;
         scene.add.existing(this);
     
         //Animations
@@ -85,6 +86,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
     update(time, delta) {
+        if (!this.visible) {
+            return; 
+        }
         if(this.body.velocity.x < 500 && this.body.velocity.x > -500) {
             this.dash = 500;
         }
@@ -100,7 +104,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         else {
             this.jumpBufferCounter -= delta;
         }
-        if(!(this.jumped) && this.jumpBufferCounter > 0 && this.coyoteTimeCounter > 0) {
+        if(!(this.jumped) && this.jumpBufferCounter > 0 && this.coyoteTimeCounter > 0 && this.canMove) {
             this.setVelocityY(-500);
             this.jumpBufferCounter = 0;
             this.scene.sound.play('sfx_jump');
@@ -144,7 +148,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             
         }
 
-        if(keyRIGHT.isDown) {
+        if(keyRIGHT.isDown && this.canMove) {
             if(this.body.velocity.x < 200){
                 this.setVelocityX(200);
             }
@@ -155,7 +159,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('playerRun');
             }
         }
-        else if(keyLEFT.isDown) {
+        else if(keyLEFT.isDown && this.canMove) {
             if(this.body.velocity.x > -200){
                 this.setVelocityX(-200);
             }

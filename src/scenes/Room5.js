@@ -20,6 +20,7 @@ class Room5 extends Phaser.Scene {
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet('playerHeadMove', './assets/animations/playerHeadMove.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('deathAnim', './assets/animations/deathAnim.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 4});
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
@@ -43,7 +44,13 @@ class Room5 extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
 
-        this.text = this.add.text(2 * this.pixelSize, 2 * this.pixelSize, 'Use Dashing to Gain Momentum', {fontSize: '25px'}).setOrigin(0,0).setScrollFactor(0);
+        this.anims.create({
+            key: 'deathAnim',
+            frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
+            frameRate: 20,
+        });
+
+        this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L5 - Dash DaSH DASH!!!', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
         this.text = this.add.text(2 * this.pixelSize, 2 * this.pixelSize, 'Use Dashing to Gain Momentum', {fontSize: '25px'}).setOrigin(0,0);
         this.player = new Player(this, 2 * this.pixelSize, 7 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
@@ -57,13 +64,13 @@ class Room5 extends Phaser.Scene {
         new Block(this, 20 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 7, 1, false, this.landGroup);
         new Block(this, 45 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 7, 1, false, this.landGroup);
         new Block(this, 78 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 7, 1, false, this.landGroup);
-        new Block(this, 121 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 8, 1, false, this.landGroup);
-        new Block(this, 169 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 9, 1, false, this.landGroup);
+        new Block(this, 117 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 12, 1, false, this.landGroup);
+        new Block(this, 167 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 11, 1, false, this.landGroup);
         new Block(this, 8 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 12, 1, false, this.spikeGroup);
         new Block(this, 27 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 18, 1, false, this.spikeGroup);
         new Block(this, 52 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 26, 1, false, this.spikeGroup);
-        new Block(this, 85 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 36, 1, false, this.spikeGroup);
-        new Block(this, 129 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 40, 1, false, this.spikeGroup);
+        new Block(this, 85 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 32, 1, false, this.spikeGroup);
+        new Block(this, 129 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 38, 1, false, this.spikeGroup);
         this.door1 = new Door(this, 176 * this.pixelSize, 6 * this.pixelSize, 'door', undefined, 'room6', 2).setOrigin(0,0);
         this.key = new Key(this, 30 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.key2 = new Key(this, 137 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
@@ -77,14 +84,23 @@ class Room5 extends Phaser.Scene {
             child.setImmovable(true);
         }
         this.physics.add.collider(playerGroup, this.landGroup);
-        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
-            this.scene.restart();
-        });
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
         this.mainCamera.setBounds(-3 * this.pixelSize, -5 * this.pixelSize, 184 * this.pixelSize, 11 * this.pixelSize);
-        //this.mainCamera.zoom = 2;
+        this.mainCamera.fadeIn(800);
+        this.time.delayedCall(800, () => {
+            this.player.canMove = true; 
+        }, null, this);
+        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
+            let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            end.anims.play('deathAnim');
+            this.player.destroy();
+            this.mainCamera.fadeOut(800);
+            this.time.delayedCall(800, () => {
+                this.scene.restart();
+            }, null, this);
+        });
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,

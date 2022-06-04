@@ -18,6 +18,7 @@ class Room3 extends Phaser.Scene {
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet('playerHeadMove', './assets/animations/playerHeadMove.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('deathAnim', './assets/animations/deathAnim.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 4});
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
@@ -40,7 +41,13 @@ class Room3 extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        this.anims.create({
+            key: 'deathAnim',
+            frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
+            frameRate: 20,
+        });
 
+        this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L3 - The Grid', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
         this.player = new Player(this, 4 * this.pixelSize, 21 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
@@ -71,10 +78,8 @@ class Room3 extends Phaser.Scene {
         new Block(this, 28 * this.pixelSize, 8 * this.pixelSize, 'whiteTile', undefined, 1, 1, true, this.landGroup);
         new Block(this, 0 * this.pixelSize, 25 * this.pixelSize, 'redSpike', undefined, 32, 1, true, this.spikeGroup);
         new Block(this, 10 * this.pixelSize, 19 * this.pixelSize, 'lava', undefined, 1, 4, true, this.spikeGroup);
-        new Block(this, 5 * this.pixelSize, 13 * this.pixelSize, 'lava', undefined, 5, 1, true, this.spikeGroup);
         new Block(this, 29 * this.pixelSize, 18 * this.pixelSize, 'lava', undefined, 3, 1, true, this.spikeGroup);
         new Block(this, 16 * this.pixelSize, 14 * this.pixelSize, 'lava', undefined, 1, 4, true, this.spikeGroup);
-        new Block(this, 23 * this.pixelSize, 13 * this.pixelSize, 'lava', undefined, 5, 1, true, this.spikeGroup);
         new Block(this, 22 * this.pixelSize, 9 * this.pixelSize, 'lava', undefined, 1, 4, true, this.spikeGroup);
         this.door1 = new Door(this, 30 * this.pixelSize, 20 * this.pixelSize, 'door', undefined, 'room4', 2).setOrigin(0,0);
         this.key = new Key(this, 13 * this.pixelSize, 15 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
@@ -89,13 +94,23 @@ class Room3 extends Phaser.Scene {
             child.setImmovable(true);
         }
         this.physics.add.collider(playerGroup, this.landGroup);
-        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
-            this.scene.restart();
-        });
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
         this.mainCamera.setBounds(-1 * this.pixelSize, -1 * this.pixelSize, 34 * this.pixelSize, 28 * this.pixelSize);
+        this.mainCamera.fadeIn(800);
+        this.time.delayedCall(800, () => {
+            this.player.canMove = true; 
+        }, null, this);
+        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
+            let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            end.anims.play('deathAnim');
+            this.player.destroy();
+            this.mainCamera.fadeOut(800);
+            this.time.delayedCall(800, () => {
+                this.scene.restart();
+            }, null, this);
+        });
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,

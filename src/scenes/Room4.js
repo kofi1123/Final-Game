@@ -20,6 +20,7 @@ class Room4 extends Phaser.Scene {
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet('playerHeadMove', './assets/animations/playerHeadMove.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('deathAnim', './assets/animations/deathAnim.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 4});
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
@@ -42,7 +43,13 @@ class Room4 extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        this.anims.create({
+            key: 'deathAnim',
+            frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
+            frameRate: 20,
+        });
 
+        this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L4 - Spike Are Okay?!? Tiles Are BAD?!?', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
         this.player = new Player(this, 2 * this.pixelSize, 18 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
@@ -72,13 +79,23 @@ class Room4 extends Phaser.Scene {
             child.setImmovable(true);
         }
         this.physics.add.collider(playerGroup, this.landGroup);
-        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
-            this.scene.restart();
-        });
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
         this.mainCamera.setBounds(-1 * this.pixelSize, -1 * this.pixelSize, 32 * this.pixelSize, 22 * this.pixelSize);
+        this.mainCamera.fadeIn(800);
+        this.time.delayedCall(800, () => {
+            this.player.canMove = true; 
+        }, null, this);
+        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
+            let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            end.anims.play('deathAnim');
+            this.player.destroy();
+            this.mainCamera.fadeOut(800);
+            this.time.delayedCall(800, () => {
+                this.scene.restart();
+            }, null, this);
+        });
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,

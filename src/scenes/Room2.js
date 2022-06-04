@@ -15,6 +15,7 @@ class Room2 extends Phaser.Scene {
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet('playerHeadMove', './assets/animations/playerHeadMove.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('deathAnim', './assets/animations/deathAnim.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 4});
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
@@ -32,6 +33,11 @@ class Room2 extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        this.anims.create({
+            key: 'deathAnim',
+            frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
+            frameRate: 20,
+        });
         
         this.playerEmitter = this.add.particles('grayPart').createEmitter({
             x: 400,
@@ -46,6 +52,7 @@ class Room2 extends Phaser.Scene {
             quantity: 50
         }); 
 
+        this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L2 - Long Fall Down', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
         this.player = new Player(this, 2 * this.pixelSize, 8 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
@@ -56,19 +63,19 @@ class Room2 extends Phaser.Scene {
         this.spikeGroup = this.physics.add.group();
         new Block(this, -32 , -32, 'whiteTile', undefined, 50, 22, true, this.landGroup);
         new Block(this,  0 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 4, 10, false, this.landGroup);
-        new Block(this,  11 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 1, 10, false, this.landGroup);
-        new Block(this,  19 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 1, 10, false, this.landGroup);
-        new Block(this,  27 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 1, 10, false, this.landGroup);
-        new Block(this,  35 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 1, 10, false, this.landGroup);
+        new Block(this,  11 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 2, 10, false, this.landGroup);
+        new Block(this,  19 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 2, 10, false, this.landGroup);
+        new Block(this,  27 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 2, 10, false, this.landGroup);
+        new Block(this,  35 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 2, 10, false, this.landGroup);
         new Block(this,  43 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 5, 10, false, this.landGroup);
         new Block(this, 4 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 7, 1, false, this.spikeGroup);
-        new Block(this, 12 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 7, 1, false, this.spikeGroup);
-        new Block(this, 20 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 7, 1, false, this.spikeGroup);
-        new Block(this, 28 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 7, 1, false, this.spikeGroup);
-        new Block(this, 36 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 7, 1, false, this.spikeGroup);
+        new Block(this, 13 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 6, 1, false, this.spikeGroup);
+        new Block(this, 21 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 6, 1, false, this.spikeGroup);
+        new Block(this, 29 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 6, 1, false, this.spikeGroup);
+        new Block(this, 37 * this.pixelSize, 19 * this.pixelSize, 'redSpike', undefined, 6, 1, false, this.spikeGroup);
         this.door1 = new Door(this, 46 * this.pixelSize, 7 * this.pixelSize, 'door', undefined, 'room3', 2).setOrigin(0,0);
-        this.key = new Key(this, 15 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
-        this.key2 = new Key(this, 31 * this.pixelSize, 7 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.key = new Key(this, 15 * this.pixelSize, 6 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.key2 = new Key(this, 31 * this.pixelSize, 6 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.canvasBg = this.add.rectangle(1.5 * this.pixelSize, 1.5 * this.pixelSize , 5 * this.pixelSize, 2 * this.pixelSize, 0x7d7d7d).setOrigin(0,0).setScrollFactor(0);
         this.canvas = this.add.sprite(2 * this.pixelSize, 2 * this.pixelSize, 'key').setOrigin(0, 0).setScrollFactor(0);
         this.canvasText = this.add.text(3 * this.pixelSize, 2 * this.pixelSize, ': 0/2', {fontSize: '32px'}).setOrigin(0,0).setScrollFactor(0);
@@ -79,13 +86,23 @@ class Room2 extends Phaser.Scene {
             child.setImmovable(true);
         }
         this.physics.add.collider(playerGroup, this.landGroup);
-        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
-            this.scene.restart();
-        });
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
         this.mainCamera.setBounds(-1 * this.pixelSize, -1 * this.pixelSize, 50 * this.pixelSize, 22 * this.pixelSize);
+        this.mainCamera.fadeIn(800);
+        this.time.delayedCall(800, () => {
+            this.player.canMove = true; 
+        }, null, this);
+        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
+            let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            end.anims.play('deathAnim');
+            this.player.destroy();
+            this.mainCamera.fadeOut(800);
+            this.time.delayedCall(800, () => {
+                this.scene.restart();
+            }, null, this);
+        });
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,
