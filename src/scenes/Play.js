@@ -4,7 +4,7 @@ class Play extends Phaser.Scene {
     }
     preload () {
         //Sprites
-        this.load.image('tile', './assets/images/Tile.png');
+        this.load.image('whiteTile', './assets/images/whiteTile.png');
         this.load.image('player', './assets/images/Player.png');
         this.load.image('playerHead', './assets/images/playerHead.png');
         this.load.image('playerRise', './assets/images/playerRise.png');
@@ -12,7 +12,7 @@ class Play extends Phaser.Scene {
         this.load.image('playerDash', './assets/images/playerDash.png');
         this.load.image('door', './assets/images/door.png');
         this.load.image('key', './assets/images/key.png');
-        this.load.image('spike', './assets/images/spike.png');
+        this.load.image('redSpike', './assets/images/redSpike.png');
 
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
@@ -47,14 +47,15 @@ class Play extends Phaser.Scene {
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
         this.spikeGroup = this.physics.add.group();
-        this.bgRight = new Block(this, -32 , -32, 'tile', undefined, 32, 22, true, this.landGroup);
-        new Block(this, 10 * this.pixelSize, 18 * this.pixelSize, 'tile', undefined, 5, 2, false, this.landGroup);
-        new Block(this, 14 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 1, 10, false, this.landGroup);
-        new Block(this, 0 * this.pixelSize, 14 * this.pixelSize, 'tile', undefined, 7, 1, false, this.landGroup);
-        new Block(this, 20 * this.pixelSize, 18 * this.pixelSize, 'tile', undefined, 10, 2, false, this.landGroup);
-        new Block(this, 20 * this.pixelSize, 5 * this.pixelSize, 'tile', undefined, 10, 10, false, this.landGroup);
-        new Block(this, 12 * this.pixelSize, 10 * this.pixelSize, 'tile', undefined, 2, 1, false, this.landGroup);
-        new Block(this, 15 * this.pixelSize, 19 * this.pixelSize, 'spike', undefined, 5, 1, false, this.spikeGroup);
+        this.bgRight = new Block(this, -32 , -32, 'whiteTile', undefined, 32, 22, true, this.landGroup);
+        new Block(this, 10 * this.pixelSize, 18 * this.pixelSize, 'whiteTile', undefined, 5, 2, false, this.landGroup);
+        new Block(this, 14 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 1, 10, false, this.landGroup);
+        new Block(this, 0 * this.pixelSize, 14 * this.pixelSize, 'whiteTile', undefined, 7, 1, false, this.landGroup);
+        new Block(this, 20 * this.pixelSize, 18 * this.pixelSize, 'whiteTile', undefined, 10, 2, false, this.landGroup);
+        new Block(this, 20 * this.pixelSize, 5 * this.pixelSize, 'whiteTile', undefined, 10, 10, false, this.landGroup);
+        new Block(this, 12 * this.pixelSize, 10 * this.pixelSize, 'whiteTile', undefined, 2, 1, false, this.landGroup);
+        new Block(this, 15 * this.pixelSize, 19 * this.pixelSize, 'whiteTile', undefined, 5, 1, false, this.landGroup);
+        new Block(this, 15 * this.pixelSize, 18 * this.pixelSize, 'redSpike', undefined, 5, 1, false, this.spikeGroup);
         this.door1 = new Door(this, 28 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room2', 2).setOrigin(0,0);
         this.key = new Key(this, 12 * this.pixelSize, 17 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.key2 = new Key(this, 29 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);

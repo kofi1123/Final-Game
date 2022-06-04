@@ -9,7 +9,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.coyoteTime = 200;
         this.coyoteTimeCounter = this.coyoteTime;
         this.jumpBufferTime = 170;
-        this.jumpBufferCounter = this.jumpBufferTime;
+        this.jumpBufferCounter = 0;
         this.spaceTime = 0;
         scene.add.existing(this);
     
