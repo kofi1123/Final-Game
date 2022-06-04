@@ -6,11 +6,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.jumped = false;
         this.moveAnim = false;
         this.canAirDash = true;
-        this.coyoteTime = 200;
+        this.coyoteTime = 100;
         this.coyoteTimeCounter = this.coyoteTime;
         this.jumpBufferTime = 170;
         this.jumpBufferCounter = 0;
         this.spaceTime = 0;
+        this.dash = 500;
         scene.add.existing(this);
     
         //Animations
@@ -84,6 +85,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
     update(time, delta) {
+        if(this.body.velocity.x < 500 && this.body.velocity.x > -500) {
+            this.dash = 500;
+        }
         if (this.body.blocked.down) {
             this.coyoteTimeCounter = this.coyoteTime;
         }
@@ -121,31 +125,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.moveAnim = false;
             this.spaceTime = 0;
         }
-        /*else if(this.jumped && this.body.blocked.down){
-            this.jumped = false;
-            console.log("here")
-            if(keyRIGHT.isDown || keyLEFT.isDown) {
-                this.anims.play('playerRun');
-            }
-        }*/
 
         if(!this.body.blocked.down && Phaser.Input.Keyboard.JustDown(keyD) && this.canAirDash){
             this.scene.sound.play('sfx_dash');
             if(!this.flipX){
                 this.rightDashPart.setPosition(this.x + 16, this.y + 16);
                 this.rightDashPart.explode();
-                if (this.body.velocity.y < 0) {
-                    this.setVelocityX(500);
-                }
-                else {
-                    this.setVelocity(500, 0);
-                } 
+                if (this.body.velocity.y < 0) this.setVelocityX(this.dash);
+                else this.setVelocity(this.dash, 0);
             } else {
                 this.leftDashPart.setPosition(this.x + 16, this.y + 16);
                 this.leftDashPart.explode();  
-                if (this.body.velocity.y < 0) this.setVelocityX(-500);
-                else this.setVelocity(-500, 0);
+                if (this.body.velocity.y < 0) this.setVelocityX(-1 * this.dash);
+                else this.setVelocity(-1 * this.dash, 0);
             }
+            this.dash += 250;
             this.canAirDash = false;
             
         }

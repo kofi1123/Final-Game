@@ -1,6 +1,6 @@
-class Room4 extends Phaser.Scene {
+class Room7 extends Phaser.Scene {
     constructor () {
-        super("room4");
+        super("room7");
     }
     preload () {
         //Sprites
@@ -43,25 +43,28 @@ class Room4 extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
 
-        this.player = new Player(this, 2 * this.pixelSize, 18 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
+        this.player = new Player(this, 2 * this.pixelSize, 7 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
         this.player.setFriction(0);
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
         this.spikeGroup = this.physics.add.group();
-        this.bgRight = new Block(this, -32 , -32, 'whiteSpike', undefined, 32, 22, true, this.landGroup);
-        new Block(this, 10 * this.pixelSize, 18 * this.pixelSize, 'whiteSpike', undefined, 5, 2, false, this.landGroup);
-        new Block(this, 14 * this.pixelSize, 10 * this.pixelSize, 'whiteSpike', undefined, 1, 10, false, this.landGroup);
-        new Block(this, 0 * this.pixelSize, 14 * this.pixelSize, 'whiteSpike', undefined, 7, 1, false, this.landGroup);
-        new Block(this, 20 * this.pixelSize, 18 * this.pixelSize, 'whiteSpike', undefined, 10, 2, false, this.landGroup);
-        new Block(this, 20 * this.pixelSize, 5 * this.pixelSize, 'whiteSpike', undefined, 10, 10, false, this.landGroup);
-        new Block(this, 12 * this.pixelSize, 10 * this.pixelSize, 'whiteSpike', undefined, 2, 1, false, this.landGroup);
-        new Block(this, 15 * this.pixelSize, 19 * this.pixelSize, 'whiteSpike', undefined, 5, 1, false, this.landGroup);
-        new Block(this, 15 * this.pixelSize, 18 * this.pixelSize, 'redTile', undefined, 5, 1, false, this.spikeGroup);
-        this.door1 = new Door(this, 28 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room5', 2).setOrigin(0,0);
-        this.key = new Key(this, 12 * this.pixelSize, 17 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
-        this.key2 = new Key(this, 28 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.bgRight = new Block(this, -32 , -32, 'whiteTile', undefined, 210, 12, true, this.landGroup);
+        new Block(this, 0 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 8, 1, false, this.landGroup);
+        new Block(this, 26 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 7, 1, false, this.landGroup);
+        new Block(this, 59 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 7, 1, false, this.landGroup);
+        new Block(this, 98 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 7, 1, false, this.landGroup);
+        new Block(this, 145 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 8, 1, false, this.landGroup);
+        new Block(this, 200 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 9, 1, false, this.landGroup);
+        new Block(this, 8 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 18, 1, false, this.spikeGroup);
+        new Block(this, 33 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 26, 1, false, this.spikeGroup);
+        new Block(this, 66 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 32, 1, false, this.spikeGroup);
+        new Block(this, 105 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 40, 1, false, this.spikeGroup);
+        new Block(this, 153 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 47, 1, false, this.spikeGroup);
+        this.door1 = new Door(this, 206 * this.pixelSize, 6 * this.pixelSize, 'door', undefined, 'finished', 2).setOrigin(0,0);
+        this.key = new Key(this, 38 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.key2 = new Key(this, 137 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.canvasBg = this.add.rectangle(1.5 * this.pixelSize, 1.5 * this.pixelSize , 5 * this.pixelSize, 2 * this.pixelSize, 0x7d7d7d).setOrigin(0,0).setScrollFactor(0);
         this.canvas = this.add.sprite(2 * this.pixelSize, 2 * this.pixelSize, 'key').setOrigin(0, 0).setScrollFactor(0);
         this.canvasText = this.add.text(3 * this.pixelSize, 2 * this.pixelSize, ': 0/2', {fontSize: '32px'}).setOrigin(0,0).setScrollFactor(0);
@@ -78,7 +81,7 @@ class Room4 extends Phaser.Scene {
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
-        this.mainCamera.setBounds(-1 * this.pixelSize, -1 * this.pixelSize, 32 * this.pixelSize, 22 * this.pixelSize);
+        this.mainCamera.setBounds(-3 * this.pixelSize, -5 * this.pixelSize, 214 * this.pixelSize, 11 * this.pixelSize);
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,

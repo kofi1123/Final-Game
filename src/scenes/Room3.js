@@ -95,6 +95,7 @@ class Room3 extends Phaser.Scene {
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
+        this.mainCamera.setBounds(-1 * this.pixelSize, -1 * this.pixelSize, 34 * this.pixelSize, 28 * this.pixelSize);
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,

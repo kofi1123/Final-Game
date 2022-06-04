@@ -58,7 +58,7 @@ class Play extends Phaser.Scene {
         new Block(this, 15 * this.pixelSize, 18 * this.pixelSize, 'redSpike', undefined, 5, 1, false, this.spikeGroup);
         this.door1 = new Door(this, 28 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room2', 2).setOrigin(0,0);
         this.key = new Key(this, 12 * this.pixelSize, 17 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
-        this.key2 = new Key(this, 29 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
+        this.key2 = new Key(this, 28 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.canvasBg = this.add.rectangle(1.5 * this.pixelSize, 1.5 * this.pixelSize , 5 * this.pixelSize, 2 * this.pixelSize, 0x7d7d7d).setOrigin(0,0).setScrollFactor(0);
         this.canvas = this.add.sprite(2 * this.pixelSize, 2 * this.pixelSize, 'key').setOrigin(0, 0).setScrollFactor(0);
         this.canvasText = this.add.text(3 * this.pixelSize, 2 * this.pixelSize, ': 0/2', {fontSize: '32px'}).setOrigin(0,0).setScrollFactor(0);
@@ -75,6 +75,7 @@ class Play extends Phaser.Scene {
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
+        this.mainCamera.setBounds(-1 * this.pixelSize, -1 * this.pixelSize, 32 * this.pixelSize, 22 * this.pixelSize);
         //Tweens
         this.idleTween = this.tweens.add({
             targets: this.player ,

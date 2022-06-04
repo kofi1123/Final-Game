@@ -3,7 +3,7 @@ let config = {
     width: 960,
     height: 640,
     backgroundColor: '#000000',
-    scene: [Menu, Tutorial, Play, Room2, Room3, Room4, Room5],
+    scene: [Menu, Tutorial, Play, Room2, Room3, Room4, Room5, Room6, Room7],
     fps: {
         target: 60,
         forceSetTimeOut: true
