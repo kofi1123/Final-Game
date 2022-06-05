@@ -50,6 +50,20 @@ class Room5 extends Phaser.Scene {
             frameRate: 20,
         });
 
+        this.playerDeath = this.add.particles('grayPart').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -800, max: 800 },
+            angle: { min: 0, max: 360 },
+            scale: { start: 0.4, end: 0 },
+            //blendMode: 'SCREEN',
+            //active: false,
+            lifespan: 500,
+            frequency: -1,
+            quantity: 50
+        }); 
+
+
         this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L5 - Dash DaSH DASH!!!', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
         this.text = this.add.text(2 * this.pixelSize, 2 * this.pixelSize, 'Use Dashing to Gain Momentum', {fontSize: '25px'}).setOrigin(0,0);
         this.player = new Player(this, 2 * this.pixelSize, 7 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
@@ -94,7 +108,10 @@ class Room5 extends Phaser.Scene {
         }, null, this);
         this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
             let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            this.playerDeath.setPosition(this.player.x, this.player.y);
+            this.playerDeath.explode();
             end.anims.play('deathAnim');
+            this.sound.play('sfx_death');
             this.player.destroy();
             this.mainCamera.fadeOut(800);
             this.time.delayedCall(800, () => {

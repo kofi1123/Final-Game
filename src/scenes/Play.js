@@ -28,6 +28,7 @@ class Play extends Phaser.Scene {
         this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
         this.load.audio('sfx_dash', './assets/sfx/sfx_dash.ogg');
         this.load.audio('sfx_collectible', './assets/sfx/sfx_collectible.ogg');
+        this.load.audio('sfx_death', './assets/sfx/sfx_death.ogg');
 
         
         
@@ -45,6 +46,19 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
             frameRate: 20,
         });
+
+        this.playerDeath = this.add.particles('grayPart').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -800, max: 800 },
+            angle: { min: 0, max: 360 },
+            scale: { start: 0.4, end: 0 },
+            //blendMode: 'SCREEN',
+            //active: false,
+            lifespan: 500,
+            frequency: -1,
+            quantity: 50
+        }); 
 
         this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L1 - Gettin\' the basics', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
         this.player = new Player(this, 2 * this.pixelSize, 18 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
@@ -86,7 +100,10 @@ class Play extends Phaser.Scene {
         }, null, this);
         this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
             let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            this.playerDeath.setPosition(this.player.x, this.player.y);
+            this.playerDeath.explode();
             end.anims.play('deathAnim');
+            this.sound.play('sfx_death');
             this.player.destroy();
             this.mainCamera.fadeOut(800);
             this.time.delayedCall(800, () => {

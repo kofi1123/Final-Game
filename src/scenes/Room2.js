@@ -39,7 +39,7 @@ class Room2 extends Phaser.Scene {
             frameRate: 20,
         });
         
-        this.playerEmitter = this.add.particles('grayPart').createEmitter({
+        this.playerDeath = this.add.particles('grayPart').createEmitter({
             x: 400,
             y: 300,
             speed: { min: -800, max: 800 },
@@ -96,7 +96,10 @@ class Room2 extends Phaser.Scene {
         }, null, this);
         this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
             let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            this.playerDeath.setPosition(this.player.x, this.player.y);
+            this.playerDeath.explode();
             end.anims.play('deathAnim');
+            this.sound.play('sfx_death');
             this.player.destroy();
             this.mainCamera.fadeOut(800);
             this.time.delayedCall(800, () => {

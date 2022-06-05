@@ -28,6 +28,8 @@ class Tutorial extends Phaser.Scene {
         this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
         this.load.audio('sfx_dash', './assets/sfx/sfx_dash.ogg');
         this.load.audio('sfx_collectible', './assets/sfx/sfx_collectible.ogg');
+        this.load.audio('sfx_death', './assets/sfx/sfx_death.ogg');
+        this.load.audio('sfx_door', './assets/sfx/sfx_door.ogg');
 
         
         
@@ -45,6 +47,19 @@ class Tutorial extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
             frameRate: 20,
         });
+
+        this.playerDeath = this.add.particles('grayPart').createEmitter({
+            x: 400,
+            y: 300,
+            speed: { min: -800, max: 800 },
+            angle: { min: 0, max: 360 },
+            scale: { start: 0.4, end: 0 },
+            //blendMode: 'SCREEN',
+            //active: false,
+            lifespan: 500,
+            frequency: -1,
+            quantity: 50
+        }); 
 
         this.text1 = this.add.text(9.5 * this.pixelSize, 4 * this.pixelSize, 'Press Space to Jump', {fontSize: '25px'}).setOrigin(0.5);
         this.text2 = this.add.text(24.5 * this.pixelSize, 4 * this.pixelSize, 'Hold Space to Jump Longer', {fontSize: '25px'}).setOrigin(0.5);
@@ -88,7 +103,10 @@ class Tutorial extends Phaser.Scene {
         }, null, this);
         this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
             let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
+            this.playerDeath.setPosition(this.player.x, this.player.y);
+            this.playerDeath.explode();
             end.anims.play('deathAnim');
+            this.sound.play('sfx_death');
             this.player.destroy();
             this.mainCamera.fadeOut(800);
             this.time.delayedCall(800, () => {

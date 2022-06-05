@@ -15,8 +15,10 @@ class Door extends Phaser.GameObjects.Sprite {
             this.touch) {
                 if(this.collected == 0) {
                     this.touch = false;
+                    this.scene.sound.play('sfx_door');
                     this.scene.mainCamera.fadeOut(1000);
                     this.scene.player.canMove = false;
+                    
                     this.scene.time.delayedCall(1000, () => {
                         this.scene.scene.start(this.nextScene);
                     }, null, this);
