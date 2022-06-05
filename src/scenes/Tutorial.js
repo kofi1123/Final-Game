@@ -17,7 +17,6 @@ class Tutorial extends Phaser.Scene {
         //Animation
         this.load.spritesheet('playerRun', './assets/animations/playerWalk.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet('playerHeadMove', './assets/animations/playerHeadMove.png', {frameWidth: 32, frameHeight: 32, startFrame: 0, endFrame: 3});
-        this.load.spritesheet('deathAnim', './assets/animations/deathAnim.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 4});
 
         //Particles
         this.load.image('grayPart', 'assets/images/particle.png');
@@ -54,8 +53,6 @@ class Tutorial extends Phaser.Scene {
             speed: { min: -800, max: 800 },
             angle: { min: 0, max: 360 },
             scale: { start: 0.4, end: 0 },
-            //blendMode: 'SCREEN',
-            //active: false,
             lifespan: 500,
             frequency: -1,
             quantity: 50
@@ -66,9 +63,9 @@ class Tutorial extends Phaser.Scene {
         this.text3 = this.add.text(39.5 * this.pixelSize, 4 * this.pixelSize, 'Avoid Red Objects', {fontSize: '25px'}).setOrigin(0.5);
         this.text4 = this.add.text(54.5 * this.pixelSize, 4 * this.pixelSize, 'Press D in the Air to Dash', {fontSize: '25px'}).setOrigin(0.5);
         this.text5 = this.add.text(69.5 * this.pixelSize, 4 * this.pixelSize, 'Collect Keys to Open Door', {fontSize: '25px'}).setOrigin(0.5);
-        this.player = new Player(this, 1 * this.pixelSize, 11 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
-        //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
-        let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
+        this.door1 = new Door(this, 76 * this.pixelSize, 10 * this.pixelSize, 'door', undefined, 'play', 1).setOrigin(0,0);
+        this.player = new Player(this, 1 * this.pixelSize, 11 * this.pixelSize, 'player', undefined).setOrigin(0,0);
+        let playerGroup = this.physics.add.group(this.player);
         this.player.setFriction(0);
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
@@ -78,7 +75,6 @@ class Tutorial extends Phaser.Scene {
         new Block(this, 22 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 5, 4, false, this.landGroup);
         new Block(this, 38 * this.pixelSize, 12 * this.pixelSize, 'redSpike', undefined, 3, 1, false, this.spikeGroup);
         new Block(this, 52 * this.pixelSize, 12 * this.pixelSize, 'redSpike', undefined, 5 , 1, false, this.spikeGroup);
-        this.door1 = new Door(this, 76 * this.pixelSize, 10 * this.pixelSize, 'door', undefined, 'play', 1).setOrigin(0,0);
         this.key = new Key(this, 69.5 * this.pixelSize, 11 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.canvasBg = this.add.rectangle(1.5 * this.pixelSize, 1.5 * this.pixelSize , 5 * this.pixelSize, 2 * this.pixelSize, 0x7d7d7d).setOrigin(0,0).setScrollFactor(0);
         this.canvas = this.add.sprite(2 * this.pixelSize, 2 * this.pixelSize, 'key').setOrigin(0, 0).setScrollFactor(0);
@@ -90,9 +86,6 @@ class Tutorial extends Phaser.Scene {
             child.setImmovable(true);
         }
         this.physics.add.collider(playerGroup, this.landGroup);
-        this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
-            this.scene.restart();
-        });
         this.mainCamera = this.cameras.main;
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
@@ -102,10 +95,8 @@ class Tutorial extends Phaser.Scene {
             this.player.canMove = true; 
         }, null, this);
         this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
-            let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
             this.playerDeath.setPosition(this.player.x, this.player.y);
             this.playerDeath.explode();
-            end.anims.play('deathAnim');
             this.sound.play('sfx_death');
             this.player.destroy();
             this.mainCamera.fadeOut(800);
@@ -150,6 +141,5 @@ class Tutorial extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
-        //this.playerHead.update();
     }
 }

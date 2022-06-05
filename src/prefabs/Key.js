@@ -15,8 +15,6 @@ class Key extends Phaser.GameObjects.Sprite {
             angle: { min: 0, max: 360 },
             scale: { start: 0.25, end: 0 } ,
             depth: -10,
-            //blendMode: 'SCREEN',
-            //active: false,
              lifespan: 350,
             frequency: -1,
             quantity: 50

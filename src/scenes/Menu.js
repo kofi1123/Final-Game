@@ -21,35 +21,19 @@ class Menu extends Phaser.Scene {
         this.load.image('door', './assets/images/door.png');
     }
     create(){
-        let menuConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#00FF00',
-            color: '#000',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
         this.pixelSize = 32;
         this.add.image(0, 0, 'menu_background').setOrigin(0, 0);
-        //this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Defragmentation', menuConfig).setOrigin(0.5);
-        //this.add.text(game.config.width/2, game.config.height/2, 'Use arrows to move, (SPACE) to jump, (D) to Dash', menuConfig).setOrigin(0.5);
-        
-        //this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press Space to Start', menuConfig).setOrigin(0.5);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        this.player = new Player(this, 640/2, 510, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
-        //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
-        let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
+
+        this.door1 = new Door(this,  27* this.pixelSize, 16 * this.pixelSize, 'door', undefined, 'tutorial', 0).setOrigin(0,0);
+        this.player = new Player(this, 640/2, 510, 'player', undefined).setOrigin(0,0);
+        let playerGroup = this.physics.add.group(this.player);
         this.player.setFriction(0);
         this.player.setCollideWorldBounds(true).setGravityY(2000);
         this.landGroup = this.physics.add.group();
-        this.door1 = new Door(this,  27* this.pixelSize, 16 * this.pixelSize, 'door', undefined, 'tutorial', 0).setOrigin(0,0);
         new Block(this, -2 * this.pixelSize, 19 * this.pixelSize, 'whiteTile', undefined, 35, 1, false, this.landGroup);
         this.physics.add.collider(playerGroup, this.landGroup);
         for (let child of this.landGroup.getChildren()) {
