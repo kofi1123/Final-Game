@@ -53,7 +53,7 @@ class Room6 extends Phaser.Scene {
             quantity: 50
         }); 
 
-        this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L6 - White Is Right', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
+        this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L6 - White Is Your Friend', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
         this.door1 = new Door(this, 20 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room7', 2).setOrigin(0,0);
         this.player = new Player(this, 2 * this.pixelSize, 16 * this.pixelSize, 'player', undefined).setOrigin(0,0);
         let playerGroup = this.physics.add.group(this.player);
