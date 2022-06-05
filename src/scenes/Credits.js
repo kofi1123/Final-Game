@@ -16,32 +16,23 @@ class Credits extends Phaser.Scene {
         this.load.audio('sfx_jump', './assets/sfx/sfx_jump2.ogg');
         this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
         this.load.audio('sfx_dash', './assets/sfx/sfx_dash.ogg');
+        this.load.audio('sfx_door', './assets/sfx/sfx_door.ogg');
         this.load.image('grayPart', 'assets/images/particle.png');
+        this.load.image('door', './assets/images/door.png');
     }
     create(){
-        let menuConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#00FF00',
-            color: '#000',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
         this.pixelSize = 32;
         this.add.image(0, 0, 'credits_background').setOrigin(0, 0);
         //this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Defragmentation', menuConfig).setOrigin(0.5);
         //this.add.text(game.config.width/2, game.config.height/2, 'Use arrows to move, (SPACE) to jump, (D) to Dash', menuConfig).setOrigin(0.5);
-        
+        this.door1 = new Door(this,  27* this.pixelSize, 16 * this.pixelSize, 'door', undefined, 'play', 0).setOrigin(0,0);
+        this.door2 = new Door(this,  this.pixelSize, 16 * this.pixelSize, 'door', undefined, 'menu', 0).setOrigin(0,0);
         //this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press Space to Start', menuConfig).setOrigin(0.5);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        this.player = new Player(this, 640/2, 0, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
+        this.player = new Player(this, 640/2, 510, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
         this.player.setFriction(0);
@@ -68,13 +59,20 @@ class Credits extends Phaser.Scene {
 
         this.mainCamera = this.cameras.main;
         this.mainCamera.fadeIn(800);
+        //music.stop();
     }
+
     update(time, delta) {
+        if(this.player.x < this.door2.x + this.door2.width &&
+            this.player.x + this.player.width > this.door2.x &&
+            this.player.y < this.door2.y + this.door2.height &&
+            this.player.height + this.player.y > this.door2.y &&
+            this.door2.touch){
+                music.stop();
+            }
         this.player.update(time, delta);
-        if(this.player.x > 960){
-            this.scene.start('play');
-        } else if(this.player.x < 0){
-            this.scene.start('menu');
-        }
+        this.door1.update();
+        this.door2.update();
+       
     }
 }

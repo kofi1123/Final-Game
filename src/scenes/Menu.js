@@ -17,6 +17,8 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_walk', './assets/sfx/sfx_walk.ogg');
         this.load.audio('sfx_dash', './assets/sfx/sfx_dash.ogg');
         this.load.image('grayPart', 'assets/images/particle.png');
+        this.load.audio('sfx_door', './assets/sfx/sfx_door.ogg');
+        this.load.image('door', './assets/images/door.png');
     }
     create(){
         let menuConfig = {
@@ -41,13 +43,13 @@ class Menu extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        this.player = new Player(this, 640/2, 0, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
+        this.player = new Player(this, 640/2, 510, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
         //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
         let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
         this.player.setFriction(0);
-        this.player.setCollideWorldBounds(false).setGravityY(2000);
+        this.player.setCollideWorldBounds(true).setGravityY(2000);
         this.landGroup = this.physics.add.group();
-       
+        this.door1 = new Door(this,  27* this.pixelSize, 16 * this.pixelSize, 'door', undefined, 'tutorial', 0).setOrigin(0,0);
         new Block(this, -2 * this.pixelSize, 19 * this.pixelSize, 'whiteTile', undefined, 35, 1, false, this.landGroup);
         this.physics.add.collider(playerGroup, this.landGroup);
         for (let child of this.landGroup.getChildren()) {
@@ -66,17 +68,13 @@ class Menu extends Phaser.Scene {
             this.player.canMove = true; 
         }, null, this);
         //Background music
-        this.musBgm = this.sound.add('mus_bgm', {loop: true});
-        this.musBgm.play();
-        this.musBgm.volume -= 0.9;
+        music = this.sound.add('mus_bgm', {loop: true});
+        music.play();
+        music.volume -= 0.9;
+        this.mainCamera = this.cameras.main;
     }
     update(time, delta) {
         this.player.update(time, delta);
-        if(this.player.x > 960){
-            this.scene.start('tutorial');
-        } 
-        if(this.player.x < 0){
-            this.scene.start('credits');
-        }
+        this.door1.update();
     }
 }
