@@ -31,8 +31,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             angle: { min: 180, max: 360 },
             scale: { start: 0.25, end: 0 } ,
             depth: -10,
-            //blendMode: 'SCREEN',
-            //active: false,
              lifespan: 400,
             frequency: -1,
             quantity: 5
@@ -46,8 +44,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             angle: { min: 180, max: 360 },
             scale: { start: 0.25, end: 0 } ,
             depth: -10,
-            //blendMode: 'SCREEN',
-            //active: false,
              lifespan: 300,
             frequency: -1,
             quantity: 3
@@ -61,8 +57,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             angle: { min: 170, max: 190 },
             scale: { start: 0.25, end: 0 } ,
             depth: -10,
-            //blendMode: 'SCREEN',
-            //active: false,
              lifespan: 500,
             frequency: -1,
             quantity: 12
@@ -76,8 +70,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             angle: { min: 10, max: -10 },
             scale: { start: 0.25, end: 0 } ,
             depth: -10,
-            //blendMode: 'SCREEN',
-            //active: false,
              lifespan: 500,
             frequency: -1,
             quantity: 12

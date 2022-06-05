@@ -55,17 +55,15 @@ class Room6 extends Phaser.Scene {
             speed: { min: -800, max: 800 },
             angle: { min: 0, max: 360 },
             scale: { start: 0.4, end: 0 },
-            //blendMode: 'SCREEN',
-            //active: false,
             lifespan: 500,
             frequency: -1,
             quantity: 50
         }); 
 
         this.text = this.add.text(game.config.width/2 + 1 * this.pixelSize, 2 * this.pixelSize, 'L6 - White Is Right', {fontSize: '25px'}).setOrigin(0.5).setScrollFactor(0);
-        this.player = new Player(this, 2 * this.pixelSize, 16 * this.pixelSize, 'player', undefined/*, this.playerEmitter*/).setOrigin(0,0);
-        //this.playerHead = new playerHead(this, 200, 600, 'playHead', this.playerEmitter).setOrigin(0,0);
-        let playerGroup = this.physics.add.group([this.player/*, this.playerHead*/]);
+        this.door1 = new Door(this, 20 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room7', 2).setOrigin(0,0);
+        this.player = new Player(this, 2 * this.pixelSize, 16 * this.pixelSize, 'player', undefined).setOrigin(0,0);
+        let playerGroup = this.physics.add.group(this.player);
         this.player.setFriction(0);
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
@@ -82,7 +80,6 @@ class Room6 extends Phaser.Scene {
         new Block(this, 26 * this.pixelSize, 7 * this.pixelSize, 'redTile', undefined, 1, 8, false, this.spikeGroup);
         new Block(this, 20 * this.pixelSize, 14 * this.pixelSize, 'redTile', undefined, 7, 1, false, this.spikeGroup);
         new Block(this, 19 * this.pixelSize, 14 * this.pixelSize, 'redTile', undefined, 1, 5, false, this.spikeGroup);
-        this.door1 = new Door(this, 20 * this.pixelSize, 15 * this.pixelSize, 'door', undefined, 'room7', 2).setOrigin(0,0);
         this.key = new Key(this, 3 * this.pixelSize, 3 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.key2 = new Key(this, 28 * this.pixelSize, 5 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.canvasBg = this.add.rectangle(1.5 * this.pixelSize, 1.5 * this.pixelSize , 5 * this.pixelSize, 2 * this.pixelSize, 0x7d7d7d).setOrigin(0,0).setScrollFactor(0);
@@ -104,10 +101,8 @@ class Room6 extends Phaser.Scene {
             this.player.canMove = true; 
         }, null, this);
         this.physics.add.collider(playerGroup, this.spikeGroup, (p,s) => {
-            let end = this.add.sprite(this.player.x, this.player.y, 'deathAnim').setOrigin(0,0);
             this.playerDeath.setPosition(this.player.x, this.player.y);
             this.playerDeath.explode();
-            end.anims.play('deathAnim');
             this.sound.play('sfx_death');
             this.player.destroy();
             this.mainCamera.fadeOut(800);
@@ -138,6 +133,5 @@ class Room6 extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
-        //this.playerHead.update();
     }
 }
