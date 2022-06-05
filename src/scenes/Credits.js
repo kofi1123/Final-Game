@@ -1,10 +1,10 @@
-class Menu extends Phaser.Scene {
+class Credits extends Phaser.Scene {
     constructor() {
-        super("menu");
+        super("credits");
     }
     preload() {
         this.load.audio('mus_bgm', './assets/sfx/mus_bgm.ogg');
-        this.load.image('menu_background', './assets/images/menuBackground.png');
+        this.load.image('credits_background', './assets/images/credits.png');
         this.load.image('whiteTile', './assets/images/whiteTile.png');
         this.load.image('player', './assets/images/Player.png');
         this.load.image('playerHead', './assets/images/playerHead.png');
@@ -32,7 +32,7 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         this.pixelSize = 32;
-        this.add.image(0, 0, 'menu_background').setOrigin(0, 0);
+        this.add.image(0, 0, 'credits_background').setOrigin(0, 0);
         //this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Defragmentation', menuConfig).setOrigin(0.5);
         //this.add.text(game.config.width/2, game.config.height/2, 'Use arrows to move, (SPACE) to jump, (D) to Dash', menuConfig).setOrigin(0.5);
         
@@ -65,18 +65,16 @@ class Menu extends Phaser.Scene {
         this.time.delayedCall(800, () => {
             this.player.canMove = true; 
         }, null, this);
-        //Background music
-        this.musBgm = this.sound.add('mus_bgm', {loop: true});
-        this.musBgm.play();
-        this.musBgm.volume -= 0.9;
+
+        this.mainCamera = this.cameras.main;
+        this.mainCamera.fadeIn(800);
     }
     update(time, delta) {
         this.player.update(time, delta);
         if(this.player.x > 960){
-            this.scene.start('tutorial');
-        } 
-        if(this.player.x < 0){
-            this.scene.start('credits');
+            this.scene.start('play');
+        } else if(this.player.x < 0){
+            this.scene.start('menu');
         }
     }
 }

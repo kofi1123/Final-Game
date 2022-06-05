@@ -69,7 +69,7 @@ class Room7 extends Phaser.Scene {
         new Block(this, 66 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 32, 1, false, this.spikeGroup);
         new Block(this, 105 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 40, 1, false, this.spikeGroup);
         new Block(this, 153 * this.pixelSize, 9 * this.pixelSize, 'redSpike', undefined, 47, 1, false, this.spikeGroup);
-        this.door1 = new Door(this, 206 * this.pixelSize, 6 * this.pixelSize, 'door', undefined, 'finished', 2).setOrigin(0,0);
+        this.door1 = new Door(this, 206 * this.pixelSize, 6 * this.pixelSize, 'door', undefined, 'credits', 2).setOrigin(0,0);
         this.key = new Key(this, 38 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.key2 = new Key(this, 137 * this.pixelSize, 4 * this.pixelSize, 'key', undefined, this.door1).setOrigin(0,0);
         this.canvasBg = this.add.rectangle(1.5 * this.pixelSize, 1.5 * this.pixelSize , 5 * this.pixelSize, 2 * this.pixelSize, 0x7d7d7d).setOrigin(0,0).setScrollFactor(0);
