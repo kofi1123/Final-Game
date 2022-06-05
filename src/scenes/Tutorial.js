@@ -41,12 +41,6 @@ class Tutorial extends Phaser.Scene {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        this.anims.create({
-            key: 'deathAnim',
-            frames: this.anims.generateFrameNumbers('deathAnim', {start: 0, end: 4, first: 0}),
-            frameRate: 20,
-        });
-
         this.playerDeath = this.add.particles('grayPart').createEmitter({
             x: 400,
             y: 300,
@@ -63,14 +57,16 @@ class Tutorial extends Phaser.Scene {
         this.text3 = this.add.text(39.5 * this.pixelSize, 4 * this.pixelSize, 'Avoid Red Objects', {fontSize: '25px'}).setOrigin(0.5);
         this.text4 = this.add.text(54.5 * this.pixelSize, 4 * this.pixelSize, 'Press D in the Air to Dash', {fontSize: '25px'}).setOrigin(0.5);
         this.text5 = this.add.text(69.5 * this.pixelSize, 4 * this.pixelSize, 'Collect Keys to Open Door', {fontSize: '25px'}).setOrigin(0.5);
+        this.add.text(-7.5 * this.pixelSize, 4 * this.pixelSize, 'Skip Tutorial', {fontSize: '25px'}).setOrigin(0.5);
         this.door1 = new Door(this, 76 * this.pixelSize, 10 * this.pixelSize, 'door', undefined, 'play', 1).setOrigin(0,0);
+        this.door2 = new Door(this, -9 * this.pixelSize, 10 * this.pixelSize, 'door', undefined, 'play', 0).setOrigin(0,0);
         this.player = new Player(this, 1 * this.pixelSize, 11 * this.pixelSize, 'player', undefined).setOrigin(0,0);
         let playerGroup = this.physics.add.group(this.player);
         this.player.setFriction(0);
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
         this.spikeGroup = this.physics.add.group();
-        this.bgRight = new Block(this, -32 , -32, 'whiteTile', undefined, 80, 15, true, this.landGroup);
+        this.bgRight = new Block(this, -14 * this.pixelSize , -32, 'whiteTile', undefined, 80, 15, true, this.landGroup);
         new Block(this, 7 * this.pixelSize, 11 * this.pixelSize, 'whiteTile', undefined, 5, 2, false, this.landGroup);
         new Block(this, 22 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 5, 4, false, this.landGroup);
         new Block(this, 38 * this.pixelSize, 12 * this.pixelSize, 'redSpike', undefined, 3, 1, false, this.spikeGroup);
@@ -90,7 +86,7 @@ class Tutorial extends Phaser.Scene {
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
         this.mainCamera.fadeIn(800);
-        this.mainCamera.setBounds(-3 * this.pixelSize, -4 * this.pixelSize, 83 * this.pixelSize, 11 * this.pixelSize);
+        this.mainCamera.setBounds(-16 * this.pixelSize, -4 * this.pixelSize, 83 * this.pixelSize, 11 * this.pixelSize);
         this.time.delayedCall(800, () => {
             this.player.canMove = true; 
         }, null, this);
@@ -137,6 +133,7 @@ class Tutorial extends Phaser.Scene {
         }
         this.key.update();
         this.door1.update();
+        this.door2.update();
         this.player.update(time, delta);
         if (Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
