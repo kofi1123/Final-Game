@@ -77,14 +77,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.leftDashPart.setAlpha(0.7);
 
         //Tweens
-        this.idleTween = this.scene.tweens.add({
+        /*this.idleTween = this.scene.tweens.add({
             targets: this,
-                    scaleX: (0.9, 1.1),
-                    scaleY: (1.1, 0.9),
+                    displayWidth: (32*0.9, 32*1.1),
+                    displayHeight: (64*1.1, 64*0.9),
                     duration: 1000,
                     repeat: -1,
                     yoyo: true
-        });
+        });*/
 
     }
     update(time, delta) {
