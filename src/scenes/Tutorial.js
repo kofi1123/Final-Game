@@ -66,7 +66,7 @@ class Tutorial extends Phaser.Scene {
         this.player.setCollideWorldBounds(false).setGravityY(2000);
         this.landGroup = this.physics.add.group();
         this.spikeGroup = this.physics.add.group();
-        this.bgRight = new Block(this, -14 * this.pixelSize , -32, 'whiteTile', undefined, 80, 15, true, this.landGroup);
+        this.bgRight = new Block(this, -14 * this.pixelSize , -32, 'whiteTile', undefined, 100, 15, true, this.landGroup);
         new Block(this, 7 * this.pixelSize, 11 * this.pixelSize, 'whiteTile', undefined, 5, 2, false, this.landGroup);
         new Block(this, 22 * this.pixelSize, 9 * this.pixelSize, 'whiteTile', undefined, 5, 4, false, this.landGroup);
         new Block(this, 38 * this.pixelSize, 12 * this.pixelSize, 'redSpike', undefined, 3, 1, false, this.spikeGroup);
@@ -86,7 +86,7 @@ class Tutorial extends Phaser.Scene {
         this.mainCamera.startFollow(this.player);
         this.mainCamera.setDeadzone(200,200);
         this.mainCamera.fadeIn(800);
-        this.mainCamera.setBounds(-16 * this.pixelSize, -4 * this.pixelSize, 83 * this.pixelSize, 11 * this.pixelSize);
+        this.mainCamera.setBounds(-16 * this.pixelSize, -4 * this.pixelSize, 103 * this.pixelSize, 11 * this.pixelSize);
         this.time.delayedCall(800, () => {
             this.player.canMove = true; 
         }, null, this);
